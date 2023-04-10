@@ -3,14 +3,22 @@ body {
 }
 
 .AppContainer {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
+        display: grid; 
+        grid-auto-rows: 1fr; 
+        grid-template-columns: 1fr 1fr 1fr 1fr; 
+        grid-template-rows: 1fr 1fr 1fr 1fr; 
+        gap: 0px 0px; 
+        grid-template-areas: 
+          "Header Header Header Store"
+          "GameButtons GameButtons GameButtons Store"
+          "GameButtons GameButtons GameButtons Store"
+          "Console Console Extra Store"; 
 }
 
-.Header, .GameView {
+.Header {
     display: flex;
     flex-flow: row;
+    grid-area: Header;
 }
 
 .Header p, button {
@@ -18,7 +26,17 @@ body {
     margin: 10px;
 }
 
-.resourceButtonContainer {
+.ResourceButtonContainer {
     display: flex;
-    flex-flow: row;
+    grid-area: GameButtons;
+}
+
+.BuyBuildingsContainer {
+    display: flex;
+    flex-flow: column;
+    grid-area: Store;
+}
+
+.GameConsole {
+    grid-area: Console;
 }

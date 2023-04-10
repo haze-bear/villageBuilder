@@ -4,6 +4,9 @@ import './App.css'
 
 //Game Componetns
 import B6rButton from './components/b6rButton/b6rButton';
+import BuildingButtton from './components/buildingButton/buildingButton';
+
+import resourceImage16  from './assets/imageImport';
 
 export default class App extends Component {
 
@@ -29,20 +32,20 @@ state = {
       name: "Town Hall",
       desc: "",
       cost: {
-        population: 0,
+        population: 10,
         coin: 10,
-        wood: 2,
-        stone: 1,
-        metal: 3,
-        crop: 0,
+        wood: 10,
+        stone: 10,
+        metal: 10,
+        crop: 10,
       },
       production: {
-        population: 1,
-        coin: 0,
-        wood: 0,
-        stone: 0,
-        metal: 0,
-        crop: 0,
+        population: 10,
+        coin: 10,
+        wood: 10,
+        stone: 10,
+        metal: 10,
+        crop: 10,
       },
       bonus: {
         population: 0,
@@ -52,16 +55,24 @@ state = {
         metal: 0,
         crop: 0,
       },
-      qty: 0,
+      image: {
+        population: 'resourceImage16.Population',
+        coin: 'resourceImage16.Coin',
+        wood: 'resourceImage16.Wood',
+        stone: 'resourceImage16.Stone',
+        metal:' resourceImage16.Metal',
+        crop: 'resourceImage16.Crop',
+      },
+      qty: 1,
     },
     farm: {
       name: "Farm",
       desc: "",
       cost: {
-        population: 0,
-        coin: 0,
-        wood: 0,
-        stone: 0,
+        population: 5,
+        coin: 10,
+        wood: 5,
+        stone: 5,
         metal: 0,
         crop: 0,
       },
@@ -71,7 +82,7 @@ state = {
         wood: 0,
         stone: 0,
         metal: 0,
-        crop: 100,
+        crop: 10,
       },
       bonus: {
         population: 0,
@@ -87,11 +98,11 @@ state = {
       name: "Wood Mill",
       desc: "",
       cost: {
-        population: 0,
-        coin: 0,
-        wood: 0,
-        stone: 0,
-        metal: 0,
+        population: 5,
+        coin: 100,
+        wood: 20,
+        stone: 5,
+        metal: 20,
         crop: 0,
       },
       production: {
@@ -116,19 +127,19 @@ state = {
       name: "Quarry",
       desc: "",
       cost: {
-        population: 0,
-        coin: 0,
-        wood: 0,
-        stone: 0,
-        metal: 0,
+        population: 20,
+        coin: 50,
+        wood: 15,
+        stone: 25,
+        metal: 10,
         crop: 0,
       },
       production: {
         population: 0,
         coin: 0,
         wood: 0,
-        stone: 5,
-        metal: 0,
+        stone: 20,
+        metal: 1,
         crop: 0,
       },
       bonus: {
@@ -145,19 +156,19 @@ state = {
       name: "Metal Works",
       desc: "",
       cost: {
-        population: 0,
-        coin: 0,
-        wood: 0,
-        stone: 0,
-        metal: 0 ,
+        population: 20,
+        coin: 100,
+        wood: 10,
+        stone: 50,
+        metal: 35 ,
         crop: 0,
       },
       production: {
         population: 0,
         coin: 0,
         wood: 0,
-        stone: 0,
-        metal: 3,
+        stone: 1,
+        metal: 5,
         crop: 0,
       },
       bonus: {
@@ -176,13 +187,13 @@ state = {
       cost: {
         population: 0,
         coin: 10,
-        wood: 2,
-        stone: 1,
-        metal: 3,
-        crop: 0,
+        wood: 10,
+        stone: 10,
+        metal: 5,
+        crop: 30,
       },
       production: {
-        population: 0,
+        population: 1,
         coin: 0,
         wood: 0,
         stone: 0,
@@ -219,7 +230,7 @@ addResource = (resource, value) => {
 }
 
 addBuilding = (building, value) => {
-
+  console.log(`addBuilding called`)
   let res = this.state.resource; //Logs resource at call
   let obj = this.state.building; //Logs building at call
   let buildingCost = obj[building].cost //Pulls building cost to be used by newObj
@@ -238,17 +249,22 @@ addBuilding = (building, value) => {
   }
   //Checks count to see if players res passes
   if(count === 6){
-    //Adds 1 to the called building quantity. [builidng] = 'object key'
-    obj[building].qty = obj[building].qty + value;
     ///This iterates throguh the players resources and subtracts the building.cost from it. Returns the new OBJ to be used.
     let newObj = Object.keys(res).reduce((a, b) => {
       a[b] = res[b] - buildingCost[b];
       return a;
     }, {});
+    console.log("passed addBuilding check")
 
-    console.log("PASSED ON ALL")
+    //Multiplies the cost by formula Price = BasePrice(1.17^Building Quantity)
+    for(const key in buildingCost) {
+      buildingCost[key] = Math.floor(buildingCost[key] * Math.pow(1.17, obj[building].qty));
+      console.log(`${[key]} is now ${buildingCost[key]}`)
+    }
 
-    //BEFORE THIS RETURN CALLS NEED TO ADD A COST MULTIPLIER. OBJECT>KEYS>?? WILL PROBABLY BE THE SOLUTION
+      //Adds 1 to the called building quantity. [builidng] = 'object key'
+      obj[building].qty = obj[building].qty + value;
+
     return this.setState(
       {
         resource: newObj,
@@ -321,29 +337,40 @@ startGame = () => {
 render() {
   return (
     <div className='AppContainer'>
-    <h1>A Text Game</h1>
-    <h2>Game Tick: {this.state.gameTick}</h2>
-    <button onClick={this.startGame} >START</button>
 
-      <div className='Header'>
-        <p>Coin: {this.state.resource.coin}</p>
-        <p>Wood: {this.state.resource.wood}</p>
-        <p>Stone: {this.state.resource.stone}</p>
-        <p>Metal: {this.state.resource.metal}</p>
-        <p>Crop: {this.state.resource.crop}</p>
-        <p>Population: {this.state.resource.population}</p>
-      </div>
+        <div className='Header'>
+          <h1>A Text Game</h1>
+          <h2>Game Tick: {this.state.gameTick}</h2>
+          <button onClick={this.startGame} >START</button>
+          <p><img src={resourceImage16.Coin} alt="coin" /> {this.state.resource.coin}</p>
+          <p><img src={resourceImage16.Wood} alt="wood" /> {this.state.resource.wood}</p>
+          <p><img src={resourceImage16.Stone} alt="Stone" /> {this.state.resource.stone}</p>
+          <p><img src={resourceImage16.Metal} alt="metal" />{this.state.resource.metal}</p>
+          <p><img src={resourceImage16.Crop} alt="crop" /> {this.state.resource.crop}</p>
+          <p><img src={resourceImage16.Population} alt="population" /> {this.state.resource.population}</p>
+        </div>
 
-      <div className='GameView'>
+        <div className='BuyBuildingsContainer'>
+            <BuildingButtton 
+            onClick={() => this.addBuilding('townHall', 1)} 
+            buttonText="Buy 1 Town Hall" cost={this.state.building.townHall.cost} 
+            qty={this.state.building.townHall.qty} 
+            produce={this.state.building.townHall.production} 
+            />
+            <BuildingButtton onClick={() => this.addBuilding('farm', 1)} buttonText="Buy 1 Farm" cost={this.state.building.farm.cost} qty={this.state.building.farm.qty} produce={this.state.building.farm.production}/>
+            <BuildingButtton onClick={() => this.addBuilding('woodMill', 1)} buttonText="Buy 1 Wood Mill" cost={this.state.building.woodMill.cost} qty={this.state.building.woodMill.qty} produce={this.state.building.woodMill.production} />
+            <BuildingButtton onClick={() => this.addBuilding('quarry', 1)} buttonText="Buy 1 Quarry" cost={this.state.building.quarry.cost} qty={this.state.building.quarry.qty} produce={this.state.building.quarry.production}/>
+            <BuildingButtton onClick={() => this.addBuilding('metalWorks', 1)} buttonText="Buy 1 Metal Works" cost={this.state.building.metalWorks.cost} qty={this.state.building.metalWorks.qty} produce={this.state.building.metalWorks.production}/>
+            <BuildingButtton onClick={() => this.addBuilding('hut', 1)} buttonText="Buy 1 Hut" cost={this.state.building.hut.cost} qty={this.state.building.hut.qty} produce={this.state.building.hut.production} />
+        </div>
 
-        <div className='resourceButtonContainer'>
+        <div className='ResourceButtonContainer'>
           <B6rButton onClick={() => this.addResource('coin', this.state.perClick.coin)} text={`Add ${this.state.perClick.coin} Coin`} />
           <B6rButton onClick={() => this.addResource('wood', this.state.perClick.wood)} text={`Add ${this.state.perClick.wood} Wood`} />
           <B6rButton onClick={() => this.addResource('stone', this.state.perClick.stone)} text={`Add ${this.state.perClick.stone} Stone`} />
           <B6rButton onClick={() => this.addResource('metal', this.state.perClick.metal)} text={`Add ${this.state.perClick.metal} Metal`} />
           <B6rButton onClick={() => this.addResource('crop', this.state.perClick.crop)} text={`Add ${this.state.perClick.crop} Crop`} />
         </div>
-      </div>
 
       <div className='GameConsole'>
         <ul>

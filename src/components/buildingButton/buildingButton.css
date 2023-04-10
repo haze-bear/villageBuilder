@@ -1,0 +1,13 @@
+.BuildingButton {
+    background-color: cadetblue;
+    display: flex;
+}
+
+.BuildingButton ul, li {
+    text-decoration: none;
+    list-style: none;
+}
+
+.BuildingButton button {
+    align-self: center;
+}
