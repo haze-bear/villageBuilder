@@ -6,6 +6,8 @@ import './App.css'
 import B6rButton from './components/b6rButton/b6rButton';
 import BuildingButtton from './components/buildingButton/buildingButton';
 
+import PlayerInventory from './components/playerInventory/playerInventory';
+
 import resourceImage16  from './assets/imageImport';
 
 export default class App extends Component {
@@ -198,15 +200,44 @@ state = {
         wood: 0,
         stone: 0,
         metal: 0,
-        crop: 0,
+        crop: 20,
       },
       bonus: {
+        population: 20,
+        coin: 0,
+        wood: 0,
+        stone: 0,
+        metal: 0,
+        crop: 0,
+      },
+      qty: 0,
+    },
+    hiddenStash: {
+      name: "Hidden Stash",
+      desc: "",
+      cost: {
+        population: 50,
+        coin: 1000,
+        wood: 500,
+        stone: 650,
+        metal: 350,
+        crop: 400,
+      },
+      production: {
         population: 0,
         coin: 0,
         wood: 0,
         stone: 0,
         metal: 0,
         crop: 0,
+      },
+      bonus: {
+        population: 10,
+        coin: 5000,
+        wood: 100,
+        stone: 100,
+        metal: 100,
+        crop: 100,
       },
       qty: 0,
     },
@@ -219,6 +250,7 @@ state = {
 //Uses [resource] to determine which B6R and takes the state.resource key as a value
 //It will then add [value] to the chosen resource
 //EX - addResource('coin', 1000)
+
 addResource = (resource, value) => {
   let obj = this.state.resource;
   obj[resource]= obj[resource] + value;
@@ -227,6 +259,31 @@ addResource = (resource, value) => {
       resource: obj
     }
   )
+}
+
+addStorage = (build) => {
+  let storage = this.state.storage
+  let currBuilding = this.state.building[build].bonus
+  let newStorage = {
+      population: 0,
+      coin: 0,
+      wood: 0,
+      stone: 0,
+      metal: 0,
+      crop: 0,
+  }
+
+  for(const key in currBuilding) {
+    newStorage[key] = storage[key] + currBuilding[key]
+  }
+
+
+  return(
+    this.setState({
+      storage: newStorage
+    })
+  )
+
 }
 
 addBuilding = (building, value) => {
@@ -265,6 +322,7 @@ addBuilding = (building, value) => {
       //Adds 1 to the called building quantity. [builidng] = 'object key'
       obj[building].qty = obj[building].qty + value;
 
+    this.addStorage(building)
     return this.setState(
       {
         resource: newObj,
@@ -276,7 +334,6 @@ addBuilding = (building, value) => {
   }
 }
 }
-
 
 productionPerTick = () => {
   let building = this.state.building
@@ -337,7 +394,6 @@ storageCheck = () => {
   )
 }
 
-
 gameTickGen = () => {
   let gT = this.state.gameTick + 1;
   this.productionHandler()
@@ -358,33 +414,14 @@ startGame = () => {
   setInterval(this.gameTickGen, 1000);
 }
 
-
 render() {
   return (
     <div className='AppContainer'>
 
         <div className='Header'>
           <button className='startButton' onClick={this.startGame}>START</button>
-          <div className='PlayerInventory'>
-            <div className='GameResource'>
-              <img src={resourceImage16.population} alt="population" /> <p>{this.state.resource.population}</p>
-            </div>
-            <div className='GameResource'>
-              <img src={resourceImage16.coin} alt="coin" /> <p>{this.state.resource.coin}</p>
-            </div>
-            <div className='GameResource'>
-              <img src={resourceImage16.wood} alt="wood" /> <p>{this.state.resource.wood}</p>
-            </div>
-            <div className='GameResource'>
-              <img src={resourceImage16.stone} alt="stone" /> <p>{this.state.resource.stone}</p>
-            </div>
-            <div className='GameResource'>
-              <img src={resourceImage16.metal} alt="metal" /> <p>{this.state.resource.metal}</p>
-            </div>
-            <div className='GameResource'>
-              <img src={resourceImage16.crop} alt="crop" /> <p>{this.state.resource.crop}</p>
-            </div>
-          </div>
+          <PlayerInventory obj={this.state.resource} />
+          <PlayerInventory obj={this.productionPerTick()} />
         </div>
 
 
@@ -436,6 +473,14 @@ render() {
               cost={this.state.building.hut.cost} 
               qty={this.state.building.hut.qty} 
               produce={this.state.building.hut.production} 
+            />
+
+            <BuildingButtton 
+              onClick={() => this.addBuilding('hiddenStash', 1)} 
+              buttonText="Build 1 Hidden Stash" 
+              cost={this.state.building.hiddenStash.cost} 
+              qty={this.state.building.hiddenStash.qty} 
+              produce={this.state.building.hiddenStash.production} 
             />
 
         </div>

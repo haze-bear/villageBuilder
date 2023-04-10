@@ -8,7 +8,7 @@ export default class BuildingButton extends Component {
 
     costPrettify = (props) => {
         let arr = []
-        console.log(`COSTPRETTIFY CALLED`)
+        // console.log(`COSTPRETTIFY CALLED`)
         for(const key in props.obj) {
             arr.push(
                 {
@@ -25,7 +25,6 @@ export default class BuildingButton extends Component {
 
         return printCost
     }
-
 
 
 

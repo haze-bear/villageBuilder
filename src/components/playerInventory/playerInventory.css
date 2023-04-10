@@ -1,0 +1,23 @@
+.ProductionInvenContainer {
+    display: flex;
+    flex-flow: row;
+}
+
+.ProductionInvenContainer ul, li {
+    text-decoration: none;
+    list-style: none;
+}
+
+.ProductionInvenItem {
+    margin: 5px;
+    padding-right: 10px;
+    display: flex;
+    flex-flow: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.ProductionInvenItem img {
+    max-width: 16px;
+    max-height: 16px;
+}

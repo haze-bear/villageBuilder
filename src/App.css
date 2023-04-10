@@ -18,9 +18,31 @@ body {
 }
 
 .Header {
+    width: 100%;
     display: flex;
     flex-flow: row;
     grid-area: Header;
+}
+
+.PlayerInventory {
+    display: flex;
+    flex-flow: row;
+    justify-self: center;
+    align-self: center;
+}
+
+.GameResource {
+    margin: 5px;
+    padding-right: 10px;
+    display: flex;
+    flex-flow: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.GameResource img {
+    max-width: 16px;
+    max-height: 16px;
 }
 
 .startButton{
