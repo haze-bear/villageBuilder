@@ -3,16 +3,18 @@ body {
 }
 
 .AppContainer {
-        display: grid; 
-        grid-auto-rows: 1fr; 
-        grid-template-columns: 1fr 1fr 1fr 1fr; 
-        grid-template-rows: 1fr 1fr 1fr 1fr; 
-        gap: 0px 0px; 
-        grid-template-areas: 
-          "Header Header Header Store"
-          "GameButtons GameButtons GameButtons Store"
-          "GameButtons GameButtons GameButtons Store"
-          "Console Console Extra Store"; 
+    max-height: 100vh;
+
+    display: grid; 
+    grid-auto-rows: 1fr; 
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+    "Header Header Header Store"
+    "GameButtons GameButtons GameButtons Store"
+    "GameButtons GameButtons GameButtons Store"
+    "Console Console Extra Store"; 
 }
 
 .Header {
@@ -21,14 +23,9 @@ body {
     grid-area: Header;
 }
 
-.Header p, button {
-    padding: 10px;
-    margin: 10px;
-}
-
-.ResourceButtonContainer {
-    display: flex;
-    grid-area: GameButtons;
+.startButton{
+    max-width: 88px;
+    max-height: 31px;
 }
 
 .BuyBuildingsContainer {
@@ -39,4 +36,10 @@ body {
 
 .GameConsole {
     grid-area: Console;
+}
+
+.GameButtons {
+    display: flex;
+    grid-area: GameButtons;
+    border: 1px solid black;
 }

@@ -1,40 +1,51 @@
 import React, { Component } from 'react'
 import './buildingButton.css'
 
+import resourceImage16 from '../../assets/imageImport'
+import arrowGL from '../../assets/img/arrowGL16.png'
+
 export default class BuildingButton extends Component {
 
     costPrettify = (props) => {
         let arr = []
-        // console.log(`COSTPRETTIFY CALLED`)
-        for(const key in props.cost) {
-            arr.push(`${[key]} of ${props.cost[key]}`)
-            console.log()
+        console.log(`COSTPRETTIFY CALLED`)
+        for(const key in props.obj) {
+            arr.push(
+                {
+                id: `${[key]}`,
+                cost: `${props.obj[key]}`,
+                img: resourceImage16[key]
+                }
+                )
         }
 
         const printCost = arr.map((a) => {
-            return <li>{a}</li>
+            return <li className={`BuildingBuyItem`} key={a.id}><img src={a.img} alt={a.id}/>{a.cost}</li>
         })
 
         return printCost
     }
 
-    //USE A VARIATION OF THIS POTENTIALLY
-    
+
+
 
     render() {
         return(
             <div className='BuildingButton'>
-                <ul>
-                    <li>COST</li>
-                    <this.costPrettify cost={this.props.cost}/>
+                <ul className="BuildingCostContainer">
+                    <this.costPrettify obj={this.props.cost} />
                 </ul>
-                <ul>
-                    <li>Produces</li>
-                    <this.costPrettify cost={this.props.produce} />
+                <img className="arrowGL" src={arrowGL} />
+                <div className='BuildingBuyContainer'>
+                <button onClick={this.props.onClick}>{this.props.buttonText}</button>
+                <label>Owned: {this.props.qty}</label>
+                </div>
+                <img className="arrowGL" src={arrowGL} />
+                <ul className='BuildingProduceContainer'>
+                    <this.costPrettify obj={this.props.produce} />
                 </ul>
-                <p>
-                </p>
-                <button onClick={this.props.onClick}>{this.props.buttonText} QTY: {this.props.qty}</button>
+                {/* LABEL TO SAY PER TICK NEEDED UNDERNEATH PRODUCE */}
+                
             </div>
         )
     }

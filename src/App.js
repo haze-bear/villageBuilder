@@ -27,6 +27,14 @@ state = {
     metal: 1,
     crop: 1,
   },
+  storage: {
+    population: 20,
+    coin: 1000,
+    wood: 1000,
+    stone: 1000,
+    metal: 1000,
+    crop: 1000,
+  },
   building: {
     townHall: {
       name: "Town Hall",
@@ -41,7 +49,7 @@ state = {
       },
       production: {
         population: 10,
-        coin: 10,
+        coin: 100,
         wood: 10,
         stone: 10,
         metal: 10,
@@ -54,14 +62,6 @@ state = {
         stone: 0,
         metal: 0,
         crop: 0,
-      },
-      image: {
-        population: 'resourceImage16.Population',
-        coin: 'resourceImage16.Coin',
-        wood: 'resourceImage16.Wood',
-        stone: 'resourceImage16.Stone',
-        metal:' resourceImage16.Metal',
-        crop: 'resourceImage16.Crop',
       },
       qty: 1,
     },
@@ -313,10 +313,35 @@ productionHandler = () => {
   )
 }
 
+storageCheck = () => {
+  let res = this.state.resource
+  let storage = this.state.storage
+  let newRes = {
+    population: 0,
+    coin: 0,
+    wood: 0,
+    stone: 0,
+    metal: 0,
+    crop: 0,
+  }
+  for (const key in res) {    
+    if(res[key] >= storage[key]) {
+      newRes[key] = storage[key];
+    } else {
+      newRes[key] = res[key]
+  }
+}
+
+  return (
+    this.setState({resource: newRes})
+  )
+}
+
 
 gameTickGen = () => {
   let gT = this.state.gameTick + 1;
   this.productionHandler()
+  this.storageCheck()
   return this.setState(
     {
       gameTick: gT
@@ -339,37 +364,88 @@ render() {
     <div className='AppContainer'>
 
         <div className='Header'>
-          <h1>A Text Game</h1>
-          <h2>Game Tick: {this.state.gameTick}</h2>
-          <button onClick={this.startGame} >START</button>
-          <p><img src={resourceImage16.Coin} alt="coin" /> {this.state.resource.coin}</p>
-          <p><img src={resourceImage16.Wood} alt="wood" /> {this.state.resource.wood}</p>
-          <p><img src={resourceImage16.Stone} alt="Stone" /> {this.state.resource.stone}</p>
-          <p><img src={resourceImage16.Metal} alt="metal" />{this.state.resource.metal}</p>
-          <p><img src={resourceImage16.Crop} alt="crop" /> {this.state.resource.crop}</p>
-          <p><img src={resourceImage16.Population} alt="population" /> {this.state.resource.population}</p>
+          <button className='startButton' onClick={this.startGame}>START</button>
+          <div className='PlayerInventory'>
+            <div className='GameResource'>
+              <img src={resourceImage16.population} alt="population" /> <p>{this.state.resource.population}</p>
+            </div>
+            <div className='GameResource'>
+              <img src={resourceImage16.coin} alt="coin" /> <p>{this.state.resource.coin}</p>
+            </div>
+            <div className='GameResource'>
+              <img src={resourceImage16.wood} alt="wood" /> <p>{this.state.resource.wood}</p>
+            </div>
+            <div className='GameResource'>
+              <img src={resourceImage16.stone} alt="stone" /> <p>{this.state.resource.stone}</p>
+            </div>
+            <div className='GameResource'>
+              <img src={resourceImage16.metal} alt="metal" /> <p>{this.state.resource.metal}</p>
+            </div>
+            <div className='GameResource'>
+              <img src={resourceImage16.crop} alt="crop" /> <p>{this.state.resource.crop}</p>
+            </div>
+          </div>
         </div>
+
+
 
         <div className='BuyBuildingsContainer'>
+
             <BuildingButtton 
-            onClick={() => this.addBuilding('townHall', 1)} 
-            buttonText="Buy 1 Town Hall" cost={this.state.building.townHall.cost} 
-            qty={this.state.building.townHall.qty} 
-            produce={this.state.building.townHall.production} 
+              onClick={() => this.addBuilding('townHall', 1)} 
+              buttonText="Buy 1 Town Hall" cost={this.state.building.townHall.cost} 
+              qty={this.state.building.townHall.qty} 
+              produce={this.state.building.townHall.production}
             />
-            <BuildingButtton onClick={() => this.addBuilding('farm', 1)} buttonText="Buy 1 Farm" cost={this.state.building.farm.cost} qty={this.state.building.farm.qty} produce={this.state.building.farm.production}/>
-            <BuildingButtton onClick={() => this.addBuilding('woodMill', 1)} buttonText="Buy 1 Wood Mill" cost={this.state.building.woodMill.cost} qty={this.state.building.woodMill.qty} produce={this.state.building.woodMill.production} />
-            <BuildingButtton onClick={() => this.addBuilding('quarry', 1)} buttonText="Buy 1 Quarry" cost={this.state.building.quarry.cost} qty={this.state.building.quarry.qty} produce={this.state.building.quarry.production}/>
-            <BuildingButtton onClick={() => this.addBuilding('metalWorks', 1)} buttonText="Buy 1 Metal Works" cost={this.state.building.metalWorks.cost} qty={this.state.building.metalWorks.qty} produce={this.state.building.metalWorks.production}/>
-            <BuildingButtton onClick={() => this.addBuilding('hut', 1)} buttonText="Buy 1 Hut" cost={this.state.building.hut.cost} qty={this.state.building.hut.qty} produce={this.state.building.hut.production} />
+
+            <BuildingButtton 
+              onClick={() => this.addBuilding('farm', 1)} 
+              buttonText="Buy 1 Farm" 
+              cost={this.state.building.farm.cost} 
+              qty={this.state.building.farm.qty} 
+              produce={this.state.building.farm.production}
+            />
+
+            <BuildingButtton 
+              onClick={() => this.addBuilding('woodMill', 1)} 
+              buttonText="Buy 1 Wood Mill" 
+              cost={this.state.building.woodMill.cost} 
+              qty={this.state.building.woodMill.qty} 
+              produce={this.state.building.woodMill.production} 
+            />
+
+            <BuildingButtton 
+              onClick={() => this.addBuilding('quarry', 1)} 
+              buttonText="Buy 1 Quarry" 
+              cost={this.state.building.quarry.cost} 
+              qty={this.state.building.quarry.qty} 
+              produce={this.state.building.quarry.production}
+            />
+
+            <BuildingButtton 
+              onClick={() => this.addBuilding('metalWorks', 1)} 
+              buttonText="Buy 1 Metal Works" 
+              cost={this.state.building.metalWorks.cost} 
+              qty={this.state.building.metalWorks.qty} 
+              produce={this.state.building.metalWorks.production}
+            />
+
+            <BuildingButtton 
+              onClick={() => this.addBuilding('hut', 1)} 
+              buttonText="Buy 1 Hut" 
+              cost={this.state.building.hut.cost} 
+              qty={this.state.building.hut.qty} 
+              produce={this.state.building.hut.production} 
+            />
+
         </div>
 
-        <div className='ResourceButtonContainer'>
-          <B6rButton onClick={() => this.addResource('coin', this.state.perClick.coin)} text={`Add ${this.state.perClick.coin} Coin`} />
-          <B6rButton onClick={() => this.addResource('wood', this.state.perClick.wood)} text={`Add ${this.state.perClick.wood} Wood`} />
-          <B6rButton onClick={() => this.addResource('stone', this.state.perClick.stone)} text={`Add ${this.state.perClick.stone} Stone`} />
-          <B6rButton onClick={() => this.addResource('metal', this.state.perClick.metal)} text={`Add ${this.state.perClick.metal} Metal`} />
-          <B6rButton onClick={() => this.addResource('crop', this.state.perClick.crop)} text={`Add ${this.state.perClick.crop} Crop`} />
+        <div className='GameButtons'>
+          <B6rButton onClick={() => this.addResource('coin', this.state.perClick.coin)} text={`Add ${this.state.perClick.coin} Coin`} id="gbCoin" />
+          <B6rButton onClick={() => this.addResource('wood', this.state.perClick.wood)} text={`Add ${this.state.perClick.wood} Wood`} id="gbWood"/>
+          <B6rButton onClick={() => this.addResource('stone', this.state.perClick.stone)} text={`Add ${this.state.perClick.stone} Stone`} id="gbStone"/>
+          <B6rButton onClick={() => this.addResource('metal', this.state.perClick.metal)} text={`Add ${this.state.perClick.metal} Metal`} id="gbMetal"/>
+          <B6rButton onClick={() => this.addResource('crop', this.state.perClick.crop)} text={`Add ${this.state.perClick.crop} Crop`} id="gbCrop"/>
         </div>
 
       <div className='GameConsole'>

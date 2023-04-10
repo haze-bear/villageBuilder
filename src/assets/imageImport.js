@@ -1,17 +1,17 @@
-import Crop from './img/crop16.png'
-import Coin from './img/coin16.png'
-import Wood from './img/wood16.png'
-import Stone from './img/stone16.png'
-import Metal from './img/metal16.png'
-import Population from './img/pop16.png'
+import crop from './img/crop16.png'
+import coin from './img/coin16.png'
+import wood from './img/wood16.png'
+import stone from './img/stone16.png'
+import metal from './img/metal16.png'
+import population from './img/pop16.png'
 
 const resourceImage16 = {
-    Crop,
-    Coin,
-    Wood,
-    Stone,
-    Metal,
-    Population,
+    crop,
+    coin,
+    wood,
+    stone,
+    metal,
+    population,
 }
 
 export default resourceImage16

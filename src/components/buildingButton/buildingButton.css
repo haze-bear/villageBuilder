@@ -1,6 +1,7 @@
 .BuildingButton {
-    background-color: cadetblue;
     display: flex;
+    border: 1px solid brown;
+    margin-bottom: 5px;
 }
 
 .BuildingButton ul, li {
@@ -10,4 +11,37 @@
 
 .BuildingButton button {
     align-self: center;
+}
+
+.BuildingCostContainer, .BuildingProduceContainer {
+    display: flex;
+    flex-flow: row;
+    padding: 5px;
+}
+
+.BuildingBuyContainer {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.BuildingBuyContainer label {
+    text-align: center;
+    font-size: 10px;
+}
+
+.BuildingBuyItem{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding: 5px;
+}
+
+.arrowGL {
+    align-self: center;
+    margin: 5px;
+    max-width: 16px;
+    max-height: 16px;
 }
