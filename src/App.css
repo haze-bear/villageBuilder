@@ -1,5 +1,5 @@
 body {
-    background-color: antiquewhite;
+    background-color: #ead4aa;
 }
 
 .AppContainer {
@@ -63,5 +63,15 @@ body {
 .GameButtons {
     display: flex;
     grid-area: GameButtons;
-    border: 1px solid black;
+    margin: 5px;
 }
+
+.GameButtonsContainer {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid brown;
+    border-radius: 5px;
+    }

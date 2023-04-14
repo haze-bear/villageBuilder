@@ -10,13 +10,17 @@ export default class BuildingButton extends Component {
         let arr = []
         // console.log(`COSTPRETTIFY CALLED`)
         for(const key in props.obj) {
-            arr.push(
-                {
-                id: `${[key]}`,
-                cost: `${props.obj[key]}`,
-                img: resourceImage16[key]
-                }
-                )
+
+            if(props.obj[key] != 0) {
+                arr.push(
+                    {
+                    id: `${[key]}`,
+                    cost: `${props.obj[key]}`,
+                    img: resourceImage16[key]
+                    }
+                    )
+            }
+
         }
 
         const printCost = arr.map((a) => {

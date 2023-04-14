@@ -15,7 +15,7 @@ export default class App extends Component {
 state = {
   resource: {
     population: 0,
-    coin: 1,
+    coin: 0,
     wood: 0,
     stone: 0,
     metal: 0,
@@ -42,40 +42,40 @@ state = {
       name: "Town Hall",
       desc: "",
       cost: {
-        population: 10,
-        coin: 10,
-        wood: 10,
-        stone: 10,
-        metal: 10,
-        crop: 10,
+        population: 500,
+        coin: 5000,
+        wood: 1000,
+        stone: 1000,
+        metal: 1000,
+        crop: 2000,
       },
       production: {
-        population: 10,
-        coin: 100,
-        wood: 10,
-        stone: 10,
-        metal: 10,
-        crop: 10,
-      },
-      bonus: {
         population: 0,
-        coin: 0,
+        coin: 10,
         wood: 0,
         stone: 0,
         metal: 0,
         crop: 0,
       },
-      qty: 1,
+      bonus: {
+        population: 200,
+        coin: 1000,
+        wood: 0,
+        stone: 0,
+        metal: 0,
+        crop: 0,
+      },
+      qty: 0,
     },
     farm: {
       name: "Farm",
       desc: "",
       cost: {
-        population: 5,
+        population: 50,
         coin: 10,
-        wood: 5,
-        stone: 5,
-        metal: 0,
+        wood: 50,
+        stone: 30,
+        metal: 15,
         crop: 0,
       },
       production: {
@@ -84,7 +84,7 @@ state = {
         wood: 0,
         stone: 0,
         metal: 0,
-        crop: 10,
+        crop: 1,
       },
       bonus: {
         population: 0,
@@ -100,17 +100,17 @@ state = {
       name: "Wood Mill",
       desc: "",
       cost: {
-        population: 5,
-        coin: 100,
-        wood: 20,
-        stone: 5,
-        metal: 20,
-        crop: 0,
+        population: 100,
+        coin: 50,
+        wood: 200,
+        stone: 50,
+        metal: 100,
+        crop: 50,
       },
       production: {
         population: 0,
         coin: 0,
-        wood: 10,
+        wood: 1,
         stone: 0,
         metal: 0,
         crop: 0,
@@ -129,19 +129,19 @@ state = {
       name: "Quarry",
       desc: "",
       cost: {
-        population: 20,
-        coin: 50,
-        wood: 15,
-        stone: 25,
-        metal: 10,
+        population: 500,
+        coin: 650,
+        wood: 100,
+        stone: 50,
+        metal: 100,
         crop: 0,
       },
       production: {
         population: 0,
         coin: 0,
         wood: 0,
-        stone: 20,
-        metal: 1,
+        stone: 1,
+        metal: 0,
         crop: 0,
       },
       bonus: {
@@ -158,19 +158,19 @@ state = {
       name: "Metal Works",
       desc: "",
       cost: {
-        population: 20,
-        coin: 100,
-        wood: 10,
-        stone: 50,
-        metal: 35 ,
+        population: 500,
+        coin: 200,
+        wood: 100,
+        stone: 500,
+        metal: 500,
         crop: 0,
       },
       production: {
         population: 0,
         coin: 0,
         wood: 0,
-        stone: 1,
-        metal: 5,
+        stone: 0,
+        metal: 1,
         crop: 0,
       },
       bonus: {
@@ -188,11 +188,11 @@ state = {
       desc: "",
       cost: {
         population: 0,
-        coin: 10,
+        coin: 5,
         wood: 10,
         stone: 10,
         metal: 5,
-        crop: 30,
+        crop: 50,
       },
       production: {
         population: 1,
@@ -200,7 +200,7 @@ state = {
         wood: 0,
         stone: 0,
         metal: 0,
-        crop: 20,
+        crop: 0,
       },
       bonus: {
         population: 20,
@@ -241,16 +241,45 @@ state = {
       },
       qty: 0,
     },
+    barn: {
+      name: "barn",
+      desc: "",
+      cost: {
+        population: 100,
+        coin: 250,
+        wood: 750,
+        stone: 400,
+        metal: 100,
+        crop: 1000,
+      },
+      production: {
+        population: 0,
+        coin: 0,
+        wood: 0,
+        stone: 0,
+        metal: 0,
+        crop: 0,
+      },
+      bonus: {
+        population: 0,
+        coin: 0,
+        wood: 2500,
+        stone: 0,
+        metal: 0,
+        crop: 2500,
+      },
+      qty: 0,
+    }
   },
   gameTick: 0,
   isPaused: true,
  }
 
+
 //Method to add one of the B6R to the players inventory.
 //Uses [resource] to determine which B6R and takes the state.resource key as a value
 //It will then add [value] to the chosen resource
 //EX - addResource('coin', 1000)
-
 addResource = (resource, value) => {
   let obj = this.state.resource;
   obj[resource]= obj[resource] + value;
@@ -261,6 +290,7 @@ addResource = (resource, value) => {
   )
 }
 
+//Adds the building.[name].bonus value to the players Storgage.
 addStorage = (build) => {
   let storage = this.state.storage
   let currBuilding = this.state.building[build].bonus
@@ -291,6 +321,7 @@ addBuilding = (building, value) => {
   let res = this.state.resource; //Logs resource at call
   let obj = this.state.building; //Logs building at call
   let buildingCost = obj[building].cost //Pulls building cost to be used by newObj
+
   //This feels scuffed
   // For loops runs through each key in players resources.
   // Compares players resources to the building.cost object.
@@ -313,14 +344,16 @@ addBuilding = (building, value) => {
     }, {});
     console.log("passed addBuilding check")
 
+    //GENERATING NEW PRICE
     //Multiplies the cost by formula Price = BasePrice(1.17^Building Quantity)
     for(const key in buildingCost) {
       buildingCost[key] = Math.floor(buildingCost[key] * Math.pow(1.17, obj[building].qty));
       console.log(`${[key]} is now ${buildingCost[key]}`)
     }
 
-      //Adds 1 to the called building quantity. [builidng] = 'object key'
-      obj[building].qty = obj[building].qty + value;
+    //ADD QTY
+    //Adds 1 to the called building quantity.
+    obj[building].qty = obj[building].qty + value;
 
     this.addStorage(building)
     return this.setState(
@@ -394,6 +427,7 @@ storageCheck = () => {
   )
 }
 
+
 gameTickGen = () => {
   let gT = this.state.gameTick + 1;
   this.productionHandler()
@@ -420,11 +454,9 @@ render() {
 
         <div className='Header'>
           <button className='startButton' onClick={this.startGame}>START</button>
-          <PlayerInventory obj={this.state.resource} />
+          <PlayerInventory obj={this.state.resource} obj2={this.state.storage} />
           <PlayerInventory obj={this.productionPerTick()} />
         </div>
-
-
 
         <div className='BuyBuildingsContainer'>
 
@@ -486,16 +518,18 @@ render() {
         </div>
 
         <div className='GameButtons'>
-          <B6rButton onClick={() => this.addResource('coin', this.state.perClick.coin)} text={`Add ${this.state.perClick.coin} Coin`} id="gbCoin" />
-          <B6rButton onClick={() => this.addResource('wood', this.state.perClick.wood)} text={`Add ${this.state.perClick.wood} Wood`} id="gbWood"/>
-          <B6rButton onClick={() => this.addResource('stone', this.state.perClick.stone)} text={`Add ${this.state.perClick.stone} Stone`} id="gbStone"/>
-          <B6rButton onClick={() => this.addResource('metal', this.state.perClick.metal)} text={`Add ${this.state.perClick.metal} Metal`} id="gbMetal"/>
-          <B6rButton onClick={() => this.addResource('crop', this.state.perClick.crop)} text={`Add ${this.state.perClick.crop} Crop`} id="gbCrop"/>
+          <div className='GameButtonsContainer'>
+            <B6rButton onClick={() => this.addResource('coin', this.state.perClick.coin)} text={`Add ${this.state.perClick.coin} Coin`} id="Coin" />
+            <B6rButton onClick={() => this.addResource('wood', this.state.perClick.wood)} text={`Add ${this.state.perClick.wood} Wood`} id="Wood"/>
+            <B6rButton onClick={() => this.addResource('stone', this.state.perClick.stone)} text={`Add ${this.state.perClick.stone} Stone`} id="Stone"/>
+            <B6rButton onClick={() => this.addResource('metal', this.state.perClick.metal)} text={`Add ${this.state.perClick.metal} Metal`} id="Metal"/>
+            <B6rButton onClick={() => this.addResource('crop', this.state.perClick.crop)} text={`Add ${this.state.perClick.crop} Crop`} id="Crop"/>
+          </div>
         </div>
 
       <div className='GameConsole'>
         <ul>
-          <li>A Message</li>
+          
         </ul>
       </div>
     </div>

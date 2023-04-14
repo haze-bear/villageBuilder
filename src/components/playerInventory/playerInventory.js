@@ -18,14 +18,10 @@ export default class PlayerInventory extends Component {
         }
 
     const printCost = arr.map((a) => {
-        return <li className={`ProductionInvenItem`} key={a.id}><img src={a.img} alt={a.id}/><p>{a.prod}</p></li>
+        return <li className={`ProductionInvenItem`} key={a.id}><img src={a.img} alt={a.id}/><p> : {a.prod}</p></li>
     })
 
         return printCost
-    }
-
-    componentDidMount() {
-        // console.log(this.props.obj)
     }
 
     render() {
@@ -33,6 +29,7 @@ export default class PlayerInventory extends Component {
             <div className='PlayerInventoryContainer'>
                 <ul className='ProductionInvenContainer'>
                 <this.productionPrettify obj={this.props.obj}/>
+                <this.productionPrettify obj={this.props.obj2}/>
                 </ul>
             </div>
         )

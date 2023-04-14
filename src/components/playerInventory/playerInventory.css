@@ -1,6 +1,7 @@
 .ProductionInvenContainer {
     display: flex;
     flex-flow: row;
+    flex-wrap: wrap;
 }
 
 .ProductionInvenContainer ul, li {
@@ -12,8 +13,8 @@
     margin: 5px;
     padding-right: 10px;
     display: flex;
-    flex-flow: column;
-    align-content: center;
+    flex-flow: row;
+    align-items: center;
     justify-content: center;
 }
 

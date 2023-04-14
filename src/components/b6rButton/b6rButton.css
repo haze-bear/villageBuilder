@@ -1,9 +1,3 @@
-.b6rButton {
-    width: 200px;
-    height: 200px;
-    border: 1px soldi salmon;
-}
-
 .GameButton {
     width: 100px;
     height: 50px;
@@ -16,22 +10,22 @@
     cursor: pointer;
 }
 
-.gbCoin {
+#Coin {
     background-image: url("../../assets/buttons/coinResourceButton.png");
 }
 
-.gbWood {
+#Wood {
     background-image: url("../../assets/buttons/woodResourceButton.png");
 }
 
-.gbStone {
+#Stone {
     background-image: url("../../assets/buttons/stoneResourceButton.png");
 }
 
-.gbMetal {
+#Metal {
     background-image: url("../../assets/buttons/metalResourceButton.png");
 }
 
-.gbCrop {
+#Crop {
     background-image: url("../../assets/buttons/cropResourceButton.png");
 }
